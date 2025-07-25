@@ -1,0 +1,19 @@
+{
+    "name": "GeoQuiz & Explorer",
+    "image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm",
+    "runArgs": [
+        "--name",
+        "geoquiz-explorer"
+    ],
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "VisualStudioExptTeam.vscodeintellicode",
+                "eamodio.gitlens",
+                "douglaszaltron.nunjucks-vscode-extensionpack",
+                "GitHub.vscode-pull-request-github"
+            ]
+        }
+    },
+    "postCreateCommand": "npm install"
+}
