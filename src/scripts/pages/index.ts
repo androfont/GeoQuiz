@@ -1,19 +1,5 @@
-import { type Country, type Field } from "../types/types";
-import fetchData from "../utils/api";
-
-async function fetchCountries(fields: Field[]): Promise<Country[]> {
-    try {
-        let fieldsQuery = fields.join(",");
-        if (fieldsQuery) {
-            fieldsQuery = `?fields=${fieldsQuery}`;
-        }
-        const countries = await fetchData<Country[]>(`https://restcountries.com/v3.1/all${fieldsQuery}`);
-        return countries;
-    } catch (error) {
-        console.error("Error fetching countries:", error);
-        return [];
-    }
-}
+import { type Country } from "../types/types";
+import { fetchCountries } from "../utils/countries-api";
 
 let countryDataPromise = fetchCountries(["cca3", "flags", "name", "area", "population", "capital", "continents", "region", "subregion"]);
 
@@ -43,9 +29,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         countryList.innerHTML = "";
         countries.forEach(country => {
             const row = document.createElement("tr");
-            row.role = "button";
+            row.role = "link";
+            const DETAILS_PAGE = "details.html?cca3=";
+            const detailsUrl = `${DETAILS_PAGE}${encodeURIComponent(country.cca3)}`;
+            row.setAttribute("data-href", detailsUrl);
             row.addEventListener("click", () => {
-                window.location.href = `details.html?cca3=${encodeURIComponent(country.cca3)}`;
+                window.location.href = detailsUrl;
             });
 
             // Flag (as image)
@@ -60,7 +49,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             // Name (common)
             const nameCell = document.createElement("td");
-            nameCell.textContent = country.name.common;
+            const nameLink = document.createElement("a");
+            nameLink.href = detailsUrl;
+            nameLink.textContent = country.name.common;
+            nameCell.appendChild(nameLink);
             row.appendChild(nameCell);
 
             // Area
