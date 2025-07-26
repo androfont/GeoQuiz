@@ -3,7 +3,7 @@ import fetchData from "../utils/api";
 
 async function fetchCountries(fields: Field[]): Promise<Country[]> {
     try {
-        var fieldsQuery = fields.join(",");
+        let fieldsQuery = fields.join(",");
         if (fieldsQuery) {
             fieldsQuery = `?fields=${fieldsQuery}`;
         }

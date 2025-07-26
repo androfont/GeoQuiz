@@ -19,8 +19,8 @@ export type Country = {
     "population": number,
     "continents": string[],
     "flags": {
-        "png": URL,
-        "svg": URL,
+        "png": string,
+        "svg": string,
         "alt": string
     }
 };
