@@ -1,42 +1,9 @@
-type Field = "cca3" | "flags" | "name" | "area" | "population" | "capital" | "continents" | "region" | "subregion";
-type Country = {
-    "name": {
-        "common": string,
-        "official": string,
-        "nativeName": {
-            "spa": {
-                "official": string,
-                "common": string
-            }
-        }
-    },
-    "capital": string[],
-    "region": string,
-    "subregion": string,
-    "area": number,
-    "cca3": string,
-    "population": number,
-    "continents": string[],
-    "flags": {
-        "png": URL,
-        "svg": URL,
-        "alt": string
-    }
-};
-
-async function fetchData<T>(url: string): Promise<T> {
-    const response = await fetch(url);
-
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    return response.json() as Promise<T>;
-}
+import { type Country, type Field } from "../types/types";
+import fetchData from "../utils/api";
 
 async function fetchCountries(fields: Field[]): Promise<Country[]> {
     try {
-        var fieldsQuery = fields.join(",");
+        let fieldsQuery = fields.join(",");
         if (fieldsQuery) {
             fieldsQuery = `?fields=${fieldsQuery}`;
         }
@@ -78,7 +45,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const row = document.createElement("tr");
             row.role = "button";
             row.addEventListener("click", () => {
-                window.location.href = `/details.html?cca3=${encodeURIComponent(country.cca3)}`;
+                window.location.href = `details.html?cca3=${encodeURIComponent(country.cca3)}`;
             });
 
             // Flag (as image)
